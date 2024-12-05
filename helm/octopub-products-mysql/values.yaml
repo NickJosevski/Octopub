@@ -2,6 +2,33 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+database:
+  hostname: #{MySQL.Server.Name}
+  port: #{MySQL.Server.Port}
+  username: #{MySQL.Database.Admin.Username}
+  password: #{MySQL.Database.Admin.Password}
+  name: #{Project.Database.Name}
+  migrateOnStartup: false
+
+ingress:
+  enabled: true
+  className: #{Project.Ingress.ClassName}
+  annotations: {
+     }
+  hosts:
+    - host: #{Project.Host.Name}
+      paths:
+        - path: /api/products
+          pathType: Prefix
+          
+service:
+  type: ClusterIP
+  port: 8083
+          
+image:
+  repository: #{Octopus.Action.Package[octopub-products-microservice-mysql].PackageId}
+  tag: #{Octopus.Action.Package[octopub-products-microservice-mysql].PackageVersion}          
+
 replicaCount: 1
 
 image:
@@ -9,14 +36,6 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
-
-database:
-  hostname: localhost
-  port: 3306
-  name: product
-  username: root
-  password: password
-  migrateOnStartup: true
 
 network:
   port: 8083
@@ -55,22 +74,6 @@ service:
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host:
-      paths:
-        - path: /api/products
-          pathType: Prefix
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
