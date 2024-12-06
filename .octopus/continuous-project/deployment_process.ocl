@@ -25,7 +25,7 @@ step "deploy-a-helm-chart-2" {
         action_type = "Octopus.HelmChartUpgrade"
         properties = {
             Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Helm.ChartDirectory = "helm/octopub-products-mysql-"
+            Octopus.Action.Helm.ChartDirectory = "helm/octopub-products-mysql"
             Octopus.Action.Helm.ClientVersion = "V3"
             Octopus.Action.Helm.Namespace = "#{Octopus.Environment.Name | ToLower}"
             Octopus.Action.Helm.ResetValues = "True"
