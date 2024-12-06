@@ -15,60 +15,6 @@ step "run-a-script" {
     }
 }
 
-step "deploy-a-helm-chart" {
-    name = "Deploy a Helm Chart"
-    properties = {
-        Octopus.Action.TargetRoles = "helm"
-    }
-
-    action {
-        action_type = "Octopus.HelmChartUpgrade"
-        is_disabled = true
-        properties = {
-            Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Helm.ChartDirectory = "helm/octopub-products-mysql"
-            Octopus.Action.Helm.ClientVersion = "V3"
-            Octopus.Action.Helm.Namespace = "#{Octopus.Environment.Name | ToLower}"
-            Octopus.Action.Helm.ResetValues = "True"
-            Octopus.Action.Helm.TemplateValuesSources = <<-EOT
-                [
-                  {
-                    "Type": "InlineYaml",
-                    "Value": "database:\n  hostname: #{MySQL.Server.Name}\n  port: #{MySQL.Server.Port}"
-                  }
-                ]
-                EOT
-            Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
-            Octopus.Action.Script.ScriptSource = "GitRepository"
-            OctopusUseBundledTooling = "False"
-        }
-        worker_pool = "hosted-ubuntu"
-
-        container {
-            feed = "docker-container-registry"
-            image = "octopusdeploy/worker-tools:ubuntu.22.04"
-        }
-
-        git_dependencies {
-            default_branch = "main"
-            git_credential_id = "GitCredentials-1"
-            git_credential_type = "Library"
-            repository_uri = "https://github.com/NickJosevski/Octopub.git"
-        }
-
-        packages "octopub-products-microservice-mysql" {
-            acquisition_location = "NotAcquired"
-            feed = "docker-container-registry"
-            package_id = "octopussamples/octopub-products-microservice-mysql"
-            properties = {
-                Extract = "False"
-                Purpose = "DockerImageReference"
-                SelectionMode = "immediate"
-            }
-        }
-    }
-}
-
 step "deploy-a-helm-chart-2" {
     name = "Deploy Octopub Helm Chart"
     properties = {
@@ -126,6 +72,60 @@ step "deploy-a-helm-chart-2" {
                 Purpose = "DockerImageReference"
                 SelectionMode = "immediate"
                 ValuesFilePath = ""
+            }
+        }
+    }
+}
+
+step "deploy-a-helm-chart" {
+    name = "Deploy a Helm Chart"
+    properties = {
+        Octopus.Action.TargetRoles = "helm"
+    }
+
+    action {
+        action_type = "Octopus.HelmChartUpgrade"
+        environments = ["production"]
+        properties = {
+            Octopus.Action.GitRepository.Source = "External"
+            Octopus.Action.Helm.ChartDirectory = "helm-/octopub-products-mysql"
+            Octopus.Action.Helm.ClientVersion = "V3"
+            Octopus.Action.Helm.Namespace = "#{Octopus.Environment.Name | ToLower}"
+            Octopus.Action.Helm.ResetValues = "True"
+            Octopus.Action.Helm.TemplateValuesSources = <<-EOT
+                [
+                  {
+                    "Type": "InlineYaml",
+                    "Value": "database:\n  hostname: #{MySQL.Server.Name}\n  port: #{MySQL.Server.Port}"
+                  }
+                ]
+                EOT
+            Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "docker-container-registry"
+            image = "octopusdeploy/worker-tools:ubuntu.22.04"
+        }
+
+        git_dependencies {
+            default_branch = "main"
+            git_credential_id = "GitCredentials-1"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/NickJosevski/Octopub.git"
+        }
+
+        packages "octopub-products-microservice-mysql" {
+            acquisition_location = "NotAcquired"
+            feed = "docker-container-registry"
+            package_id = "octopussamples/octopub-products-microservice-mysql"
+            properties = {
+                Extract = "False"
+                Purpose = "DockerImageReference"
+                SelectionMode = "immediate"
             }
         }
     }
