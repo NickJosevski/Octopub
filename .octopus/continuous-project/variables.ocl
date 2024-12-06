@@ -1,0 +1,27 @@
+variable "MySQL.Database.Admin.Username" {
+    value "app-db-user-primary" {}
+}
+
+variable "MySQL.Server.Name" {
+    value "#{Azure.US.Primary.MySql.Name}.mysql.database.azure.com" {}
+}
+
+variable "MySQL.Server.Port" {
+    value "3306" {}
+}
+
+variable "Project.Database.Name" {
+    value "continous-db-dev" {
+        environment = ["development"]
+    }
+
+    value "continous-db-staging" {
+        description = ""
+        environment = ["staging"]
+    }
+
+    value "continous-db" {
+        description = ""
+        environment = ["production"]
+    }
+}
