@@ -72,5 +72,16 @@ step "deploy-octopub-mysql-helm-chart" {
             git_credential_type = "Library"
             repository_uri = "https://github.com/NickJosevski/Octopub.git"
         }
+
+        packages "octopub-products-microservice-mysql" {
+            acquisition_location = "NotAcquired"
+            feed = "docker-container-registry"
+            package_id = "octopussamples/octopub-products-microservice-mysql"
+            properties = {
+                Extract = "False"
+                Purpose = "DockerImageReference"
+                SelectionMode = "immediate"
+            }
+        }
     }
 }
