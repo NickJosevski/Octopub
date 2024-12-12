@@ -48,9 +48,8 @@ step "deploy-octopub-mysql-helm-chart" {
             Octopus.Action.Helm.TemplateValuesSources = <<-EOT
                 [
                   {
-                    "Type": "GitRepository",
-                    "GitDependencyName": "TemplateValues-1",
-                    "ValuesFilePaths": "helm/octopub-products-mysql/values.yaml"
+                    "Type": "InlineYaml",
+                    "Value": "database:\n  hostname: #{MySQL.Server.Name}\n  port: #{MySQL.Server.Port}"
                   }
                 ]
                 EOT
@@ -66,13 +65,6 @@ step "deploy-octopub-mysql-helm-chart" {
             repository_uri = "https://github.com/NickJosevski/Octopub.git"
         }
 
-        git_dependencies "TemplateValues-1" {
-            default_branch = "main"
-            git_credential_id = "GitCredentials-1"
-            git_credential_type = "Library"
-            repository_uri = "https://github.com/NickJosevski/Octopub.git"
-        }
-
         packages "octopub-products-microservice-mysql" {
             acquisition_location = "NotAcquired"
             feed = "docker-container-registry"
@@ -81,6 +73,7 @@ step "deploy-octopub-mysql-helm-chart" {
                 Extract = "False"
                 Purpose = "DockerImageReference"
                 SelectionMode = "immediate"
+                ValuesFilePath = ""
             }
         }
     }
