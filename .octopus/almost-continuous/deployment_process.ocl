@@ -15,6 +15,20 @@ step "run-a-script" {
     }
 }
 
+step "a-gate-for-production-deployments" {
+    name = "A gate for production deployments"
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["production"]
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "temporary gate while we gain confidence to ship automatically always"
+            Octopus.Action.Manual.ResponsibleTeamIds = "space-managers"
+        }
+    }
+}
+
 step "deploy-octopub-mysql-helm-chart" {
     name = "Deploy Octopub.MySQL Helm Chart"
     properties = {
