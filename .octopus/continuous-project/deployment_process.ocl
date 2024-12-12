@@ -23,6 +23,7 @@ step "deploy-a-helm-chart-2" {
 
     action "deploy-octopub-helm-chart" {
         action_type = "Octopus.HelmChartUpgrade"
+        is_disabled = true
         properties = {
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Helm.ChartDirectory = "helm/octopub-products-mysql"
@@ -86,10 +87,9 @@ step "deploy-a-helm-chart" {
     action {
         action_type = "Octopus.HelmChartUpgrade"
         environments = ["production"]
-        is_disabled = true
         properties = {
             Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Helm.ChartDirectory = "helm-/octopub-products-mysql"
+            Octopus.Action.Helm.ChartDirectory = "helm/octopub-products-mysql"
             Octopus.Action.Helm.ClientVersion = "V3"
             Octopus.Action.Helm.Namespace = "#{Octopus.Environment.Name | ToLower}"
             Octopus.Action.Helm.ResetValues = "True"
