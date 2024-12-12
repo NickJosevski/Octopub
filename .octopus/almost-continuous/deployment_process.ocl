@@ -1,7 +1,7 @@
 step "run-a-script" {
-    name = "Run a Script"
+    name = "Create namespace for environment"
 
-    action {
+    action "create-namespace-for-environment" {
         action_type = "Octopus.Script"
         properties = {
             Octopus.Action.Script.ScriptBody = <<-EOT
