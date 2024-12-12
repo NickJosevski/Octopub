@@ -15,22 +15,6 @@ step "run-a-script" {
     }
 }
 
-step "production-gate" {
-    name = "Production Gate"
-
-    action {
-        action_type = "Octopus.Manual"
-        environments = ["production"]
-        is_disabled = true
-        properties = {
-            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
-            Octopus.Action.Manual.Instructions = "Only some people will be able to sign off on this, even tho the pipeline is going fully automated"
-            Octopus.Action.Manual.ResponsibleTeamIds = "space-managers"
-            Octopus.Action.RunOnServer = "false"
-        }
-    }
-}
-
 step "deploy-octopub-mysql-helm-chart" {
     name = "Deploy Octopub.MySQL Helm Chart"
     properties = {
