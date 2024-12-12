@@ -54,10 +54,9 @@ step "deploy-octopub-mysql-helm-chart" {
                 ]
                 EOT
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
-            Octopus.Action.RunOnServer = "false"
             Octopus.Action.Script.ScriptSource = "GitRepository"
         }
-        worker_pool_variable = ""
+        worker_pool = "hosted-ubuntu"
 
         git_dependencies {
             default_branch = "main"
