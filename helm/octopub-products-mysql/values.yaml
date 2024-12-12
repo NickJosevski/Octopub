@@ -9,7 +9,7 @@ database:
   username: #{MySQL.Database.Admin.Username}
   password: #{MySQL.Database.Admin.Password}
   name: #{Project.Database.Name}
-  migrateOnStartup: #{Project.Database.Migrate}
+  migrateOnStartup: false
 
 ingress:
   enabled: true
