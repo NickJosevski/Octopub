@@ -21,6 +21,7 @@ step "production-gate" {
     action {
         action_type = "Octopus.Manual"
         environments = ["production"]
+        is_disabled = true
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Only some people will be able to sign off on this, even tho the pipeline is going fully automated"
