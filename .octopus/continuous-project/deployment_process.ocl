@@ -86,6 +86,7 @@ step "deploy-a-helm-chart" {
     action {
         action_type = "Octopus.HelmChartUpgrade"
         environments = ["production"]
+        is_disabled = true
         properties = {
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Helm.ChartDirectory = "helm-/octopub-products-mysql"
